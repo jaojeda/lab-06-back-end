@@ -14,7 +14,7 @@ const geoData = require('./data/geo.json');
 // - enable CORS
 app.use(cors());
 
-app.get('location', (request, response) => {
+app.get('/location', (request, response) => {
     try {
         const location = request.query.location;
         const result = getLatLng(location);
