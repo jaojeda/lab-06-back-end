@@ -11,6 +11,7 @@ const app = express();
 const PORT = process.env.PORT;
 
 const geoData = require('./data/geo.json');
+const weatherData = require('./data/darksky.json');
 // - enable CORS
 app.use(cors());
 
@@ -27,6 +28,33 @@ app.get('/location', (request, response) => {
     }
 
 });
+
+app.get('/weather', (request, response) => {
+    try {
+        const weather = request.query.weather;
+        const result = getForecast(weather);
+        response.status(200).json(result);
+    }
+
+    catch(err) {
+        // TODO: make an object and send via .json...
+        response.status(500).send('Sorry something went wrong, please try again');
+    }
+
+});
+
+function getForecast() {
+    const eightDayForecast = [];
+
+    for(let i = 0; i < weatherData.daily.data.length; i++) {
+        const dailyForecast = {
+            forecast: weatherData.daily.data[i].summary,
+            time: weatherData.daily.data[i].time
+        };
+        eightDayForecast.push(dailyForecast);
+    }
+    return eightDayForecast;
+}
 
 function getLatLng() {
     // ignore location for now, return hard-coded file
