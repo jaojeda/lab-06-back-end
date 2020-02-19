@@ -44,16 +44,12 @@ app.get('/weather', (request, response) => {
 });
 
 function getForecast() {
-    const eightDayForecast = [];
 
-    for(let i = 0; i < weatherData.daily.data.length; i++) {
-        const dailyForecast = {
-            forecast: weatherData.daily.data[i].summary,
-            time: weatherData.daily.data[i].time
-        };
-        eightDayForecast.push(dailyForecast);
-    }
-    return eightDayForecast;
+    return weatherData.daily.data.map(obj => ({
+        forecast: obj.summary,
+        time: obj.time
+    }));
+    
 }
 
 function getLatLng() {
